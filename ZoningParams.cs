@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+// The zone categories used to describe objects
 public enum ZoneTypes
     {
         General_Residential,
@@ -13,6 +13,7 @@ public enum ZoneTypes
         Education
     }
 
+// The availiable names for buildings (Use Zone for empty plots)
 public enum ObjName
 {
     Zone,
@@ -32,6 +33,9 @@ public enum ObjName
     Parking_Lot,
     Art_Gallery
 }
+
+// holds parameters for a building or an empty plot
+// used by condition checker to see if the combination is allowed
 public class ZoningParams : MonoBehaviour
 {
     public ObjName objName;
@@ -40,8 +44,12 @@ public class ZoningParams : MonoBehaviour
     [System.Serializable]
     public class Conditions
     {
+        // array of objects this can not be adjacent to
         public ObjName[] cantBeAdjacent;
+        // if this zone has a height restriction (true) or this building violates a height restriction (true)
+        // set to false otherwise
         public bool heightRestriction;
+        // if this building is not allowed to be build (outlawed by municipality)
         public bool notAllowed;
     }
     public Conditions conditions;
