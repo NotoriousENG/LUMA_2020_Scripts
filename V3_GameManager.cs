@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class V3_GameManager : MonoBehaviour
 {
+    public LevelSelect levelSelect;
     /* =========================================================
      * MISSING PARTS THAT NEED TO BE IMPLEMENTED BY ORDER OF IMPORTANCE
      * =========================================================
@@ -13,16 +14,8 @@ public class V3_GameManager : MonoBehaviour
      * 4. Might want to make a separate UI handling script that is called to handle all UI interactions and events
      * 5. Twitter functionality should be good by needs to be looked over
      */
-    
-    private GameObject currLvl;
+    // private LevelVariables lvlVars;
 
-
-    private class LevelVariables
-    {
-        public Color originalColor;
-    }
-    private LevelVariables lvlVars;
-    public Color highlightColor;
 
     [Tooltip("Used for twitter functionality")]
     public Screencapture snapCam;      //Use snapCam.CallTakeSnapshot() to use the snapshot feature
@@ -31,7 +24,9 @@ public class V3_GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        moveToLevel(this.GetComponent<LevelSelect>().firstLevel());
+        // moveToLevel(this.GetComponent<LevelSelect>().firstLevel());
+        levelSelect.highlightLevel(levelSelect.currLevel());
+        // moveToLevel(levelSelect.currLevel());
     }
 
     // Update is called once per frame
@@ -40,24 +35,11 @@ public class V3_GameManager : MonoBehaviour
         
     }
 
-
-    //Highlight current plot/level
-    public void highlightLevel(GameObject level)
-    {
-        lvlVars.originalColor = level.GetComponent<Renderer>().material.color;
-        level.GetComponent<Renderer>().material.color = highlightColor;
-    }
-
-    public void unhighlightLevel(GameObject level)
-    {
-        level.GetComponent<Renderer>().material.color = lvlVars.originalColor;
-    }
-
     //Switches highlight to the next level
     public void moveToLevel(GameObject level)
     {
-        currLvl = level;
-        highlightLevel(currLvl);
+        // TODO: handle camera
+        levelSelect.getNextLevel();
     }
 
 }
