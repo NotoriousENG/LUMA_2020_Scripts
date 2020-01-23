@@ -5,8 +5,9 @@ using UnityEngine;
 public class LevelSelect : MonoBehaviour
 {
     [Tooltip("Enter levels (GameObject plots) in order of game flow")]
-    public GameObject[] level;
-    private int levelIndex;
+    public Queue<GameObject> levels;
+    public Color highlightColor;
+    private Color originalColor;
 
     /*===========================================================
      * To Do With This Script and It's Implementation
@@ -15,25 +16,30 @@ public class LevelSelect : MonoBehaviour
      * ===========================================================
      */
 
-    // This function is to be called in the Game Manager Start Function 
-    public GameObject firstLevel()
+    // return the current element
+    public GameObject currLevel()
     {
-        //Debug.Log("Initialized Level " + (levelIndex + 1));
-        return level[levelIndex];
+        return levels.Peek(); 
     }
 
 
-    //This function is to be called after a successfull building placement
-    public GameObject nextLevel()
+    //This function is to be called after a successfull building placement 
+    // also handles highlighting plots
+    public GameObject getNextLevel()
     {
-        levelIndex++;
-        //Debug.Log("Level " + (levelIndex) + " finished.");
-        if (levelIndex >= level.Length)
-        {
-            Debug.Log("All Levels Complete");
-            return null;
-        }
-        //Debug.Log("Level " + (levelIndex + 1) + " started.");
-        return level[levelIndex];
+        unhighlightLevel(levels.Dequeue());
+        highlightLevel(currLevel());
+        return currLevel();
+    }
+
+    public void highlightLevel(GameObject level)
+    {
+        originalColor =  level.GetComponent<Renderer>().material.color;
+        level.GetComponent<Renderer>().material.color = highlightColor;
+    }
+
+    public void unhighlightLevel(GameObject level)
+    {
+        level.GetComponent<Renderer>().material.color = originalColor;
     }
 }
