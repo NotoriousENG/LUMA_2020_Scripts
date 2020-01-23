@@ -35,8 +35,9 @@ public class V3_GameManager : MonoBehaviour
         // if we can build the building, build it
         if (conditionChecker.check(building, levelSelect.currLevel()))
         {
-            Instantiate(building, levelSelect.currLevel().transform);
+            Instantiate(building, levelSelect.currLevel().transform.position, Quaternion.identity);
             // TODO: handle UI messages (success)
+            moveToLevel(); //DELETE ME LATER. FOR TESTING PURPOSES ONLY
             // Invoke(moveToLevel)
         } else
         {
@@ -48,7 +49,15 @@ public class V3_GameManager : MonoBehaviour
     public void moveToLevel()
     {
         // TODO: handle camera
-        levelSelect.getNextLevel();
+        if (levelSelect.levels.Count != 1)
+        {
+            levelSelect.getNextLevel();
+        }
+        else
+        {
+            Debug.Log("Queue is empty");
+        }
+        
     }
 
 }

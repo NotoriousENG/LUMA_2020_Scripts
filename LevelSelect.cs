@@ -19,6 +19,7 @@ public class LevelSelect : MonoBehaviour
 
      private void Start() 
      {
+        levels = new Queue<GameObject>();
          foreach (GameObject obj in levelArr)
          {
              levels.Enqueue(obj);
