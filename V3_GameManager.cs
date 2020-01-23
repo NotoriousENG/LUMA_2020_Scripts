@@ -5,6 +5,7 @@ using UnityEngine;
 public class V3_GameManager : MonoBehaviour
 {
     public LevelSelect levelSelect;
+    public ConditionChecker conditionChecker;
     /* =========================================================
      * MISSING PARTS THAT NEED TO BE IMPLEMENTED BY ORDER OF IMPORTANCE
      * =========================================================
@@ -29,14 +30,22 @@ public class V3_GameManager : MonoBehaviour
         // moveToLevel(levelSelect.currLevel());
     }
 
-    // Update is called once per frame
-    void Update()
+    public void build(GameObject building)
     {
-        
+        // if we can build the building, build it
+        if (conditionChecker.check(building, levelSelect.currLevel()))
+        {
+            Instantiate(building, levelSelect.currLevel().transform);
+            // TODO: handle UI messages (success)
+            // Invoke(moveToLevel)
+        } else
+        {
+            // TODO: handle UI messages (failure)
+        }
     }
 
     //Switches highlight to the next level
-    public void moveToLevel(GameObject level)
+    public void moveToLevel()
     {
         // TODO: handle camera
         levelSelect.getNextLevel();
