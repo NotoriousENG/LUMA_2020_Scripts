@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelSelect : MonoBehaviour
 {
     [Tooltip("Enter levels (GameObject plots) in order of game flow")]
+    public GameObject[] levelArr;
     public Queue<GameObject> levels;
     public Color highlightColor;
     private Color originalColor;
@@ -15,6 +16,15 @@ public class LevelSelect : MonoBehaviour
      * 2. Have the game manager save the current plot and enter it into a camera script that will "Look At" the current plot
      * ===========================================================
      */
+
+     private void Start() 
+     {
+         foreach (GameObject obj in levelArr)
+         {
+             levels.Enqueue(obj);
+         }
+     }
+
 
     // return the current element
     public GameObject currLevel()
