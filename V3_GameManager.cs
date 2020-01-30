@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CameraSystem;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ public class V3_GameManager : MonoBehaviour
 
     [Tooltip("Used for twitter functionality")]
     public Screencapture snapCam;      //Use snapCam.CallTakeSnapshot() to use the snapshot feature
+    public CameraSystem_Camera cinCam;
 
 
     // Start is called before the first frame update
@@ -35,12 +37,22 @@ public class V3_GameManager : MonoBehaviour
         // if we can build the building, build it
         if (conditionChecker.check(building, levelSelect.currLevel()))
         {
+            Debug.Log(building.name + " can be built");
             Instantiate(building, levelSelect.currLevel().transform.position, Quaternion.identity);
+            Debug.Log(building.name + " was built");
             // TODO: handle UI messages (success)
             moveToLevel(); //DELETE ME LATER. FOR TESTING PURPOSES ONLY
+            
+
+            if (cinCam.camQ.Count != 0) //TODO: Remove when there are more camera spots than plots
+            {
+                switchCameraSpots(cinCam.camQ.Dequeue());
+            }
             // Invoke(moveToLevel)
-        } else
+        }
+        else
         {
+            Debug.Log(building.name + " can't be built! Try again!");
             // TODO: handle UI messages (failure)
         }
     }
@@ -52,12 +64,18 @@ public class V3_GameManager : MonoBehaviour
         if (levelSelect.levels.Count != 1)
         {
             levelSelect.getNextLevel();
+            Debug.Log("Moving to next plot");
         }
         else
         {
             Debug.Log("Queue is empty");
         }
         
+    }
+
+    void switchCameraSpots(CameraSystem_Spot targetSpot)
+    {
+        cinCam.SwitchCameraSpots(targetSpot);
     }
 
 }

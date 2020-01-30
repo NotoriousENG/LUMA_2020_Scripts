@@ -31,7 +31,8 @@ public enum ObjName
     House_of_Worship,
     Local_Government_Building,
     Parking_Lot,
-    Art_Gallery
+    Art_Gallery,
+    School
 }
 
 // holds parameters for a building or an empty plot
