@@ -11,7 +11,7 @@ public class SmartResponses : MonoBehaviour
     private string templateGreat = "would make a great addition to this neighborhood. ";
     private string templateBad = "is not allowed because that is for ";
 
-    public string getResponse(GameObject building, ZoneType plotType, bool isCorrect)
+    public string getResponse(GameObject building, ZoneTypes plotType, bool isCorrect)
     {
         // (Excellent!/Not quite.) This area is zoned for General Residential
         var str = initRemark(isCorrect) + templateZone + fromZoneType(plotType) + ". ";
@@ -49,7 +49,7 @@ public class SmartResponses : MonoBehaviour
         return list[Random.Range(0, list.Count)];
     }
 
-    public string fromZoneType(ZoneType zoneType)
+    public string fromZoneType(ZoneTypes zoneType)
     {
         return zoneType.ToString();
     }
