@@ -33,6 +33,14 @@ public class V3_GameManager : MonoBehaviour
         // moveToLevel(levelSelect.currLevel());
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            snapCam.CallTakeSnapshot();
+        }
+    }
+
     public void build(GameObject building)
     {
         // if we can build the building, build it
@@ -58,7 +66,10 @@ public class V3_GameManager : MonoBehaviour
         }
         // Debug.Log("RESPONSE: ");
         var p = levelSelect.currLevel().GetComponent<ZoningParams>();
-        Debug.Log(responses.getResponse(building, p.zoneTypes[0], canBuild));
+        string response = (responses.getResponse(building, p.zoneTypes, canBuild));
+
+        // TODO: Print response to UI Element
+        Debug.Log(response);
     }
 
     //Switches highlight to the next level
