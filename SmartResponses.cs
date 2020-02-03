@@ -22,9 +22,10 @@ public class SmartResponses : MonoBehaviour
         // ... Single Family Home is not allowed because that is for ...
         str += "Your " +  buildingParams.objName.ToString().Replace("_"," ") + " " + finalResponse(isCorrect);
 
+
         if (!isCorrect)
         {
-            str += printAllZones(buildingZones) + " areas.";
+            str += printAllZones(buildingZones) + " zones.";
         }
 
         return str;
@@ -57,7 +58,7 @@ public class SmartResponses : MonoBehaviour
     {
         return list[Random.Range(0, list.Count)];
     }
-
+   
     public string printZones(ZoneTypes[] z0, ZoneTypes[] z1, bool isCorrect)
     {
         if (isCorrect)
@@ -96,6 +97,7 @@ public class SmartResponses : MonoBehaviour
         }
         s = s.Remove(s.Length - 2).Replace("_", " ");
         return s;
+
     }
     public string fromZoneType(ZoneTypes zoneType)
     {
