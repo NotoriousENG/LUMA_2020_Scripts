@@ -11,13 +11,22 @@ public class SmartResponses : MonoBehaviour
     private string templateGreat = "would make a great addition to this neighborhood. ";
     private string templateBad = "is not allowed because that is for ";
 
-    public string getResponse(GameObject building, ZoneType plotType, bool isCorrect)
+    public string getResponse(GameObject building, ZoneTypes[] plotTypes, bool isCorrect)
     {
+        var buildingParams = building.GetComponent<ZoningParams>();
+        var buildingZones = buildingParams.zoneTypes;
         // (Excellent!/Not quite.) This area is zoned for General Residential
-        var str = initRemark(isCorrect) + templateZone + fromZoneType(plotType) + ". ";
+        var str = initRemark(isCorrect) + templateZone + printAllZones(plotTypes) + ". ";
+
         // ... Single Family Home would make a great addition to this neighborhood.
         // ... Single Family Home is not allowed because that is for ...
-        str +=  building.name + " " + finalResponse(isCorrect);
+        str += "Your " +  buildingParams.objName.ToString().Replace("_"," ") + " " + finalResponse(isCorrect);
+
+        if (!isCorrect)
+        {
+            str += printAllZones(buildingZones) + " areas.";
+        }
+
         return str;
     }
 
@@ -49,7 +58,46 @@ public class SmartResponses : MonoBehaviour
         return list[Random.Range(0, list.Count)];
     }
 
-    public string fromZoneType(ZoneType zoneType)
+    public string printZones(ZoneTypes[] z0, ZoneTypes[] z1, bool isCorrect)
+    {
+        if (isCorrect)
+        {
+            return printAllZones(z0);
+        }
+        else
+        {
+            return printCorrectZones(z0, z1);
+        }
+    }
+
+    public string printCorrectZones(ZoneTypes[] zoneTypes0, ZoneTypes[] zoneTypes1)
+    {
+        string s = null;
+        foreach (var z0 in zoneTypes1)
+        {
+            foreach (var z1 in zoneTypes1)
+            {
+                if (z0 == z1)
+                {
+                    s += z0.ToString() + "/ ";
+                }
+            }
+        }
+        s = s.Remove(s.Length - 2);
+        return s;
+    }
+    public string printAllZones(ZoneTypes[] zoneTypes)
+    {
+        string s = null;
+
+        foreach (var z in zoneTypes)
+        {
+            s += z.ToString() + "/ ";
+        }
+        s = s.Remove(s.Length - 2).Replace("_", " ");
+        return s;
+    }
+    public string fromZoneType(ZoneTypes zoneType)
     {
         return zoneType.ToString();
     }

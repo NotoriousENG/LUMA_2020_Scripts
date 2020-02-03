@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
+[RequireComponent(typeof(ScreenCapToTwitter))]
 public class Screencapture : MonoBehaviour
 {
     //Gotten from https://www.youtube.com/watch?v=d-56p770t0U
@@ -12,12 +13,14 @@ public class Screencapture : MonoBehaviour
     // Possible Asset Pack https://assetstore.unity.com/detail/tools/integration/cross-platform-native-plugins-lite-version-37272
 
     Camera snapCam;
+    ScreenCapToTwitter twitterCap;
     int resWidth = 500;
     int resHeight = 500;
     // Start is called before the first frame update
     void Awake()
     {
         snapCam = GetComponent<Camera>();
+        twitterCap = GetComponent<ScreenCapToTwitter>();
         if (snapCam.targetTexture == null)
         {
             //NEED TO FIND OUT SCREENSIZE OF DEVICE TO MAKE THIS WORK PROPERLY
@@ -48,6 +51,8 @@ public class Screencapture : MonoBehaviour
             byte[] bytes = snapShot.EncodeToPNG();
             string fileName = SnapShotName();
             System.IO.File.WriteAllBytes(fileName, bytes);
+            string encoded64ImageData = System.Convert.ToBase64String(bytes);
+            twitterCap.PostToTwitter("Hey There!", encoded64ImageData);
             Debug.Log("Snapshot Taken");
             snapCam.gameObject.SetActive(false);
         }

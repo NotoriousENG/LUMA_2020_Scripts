@@ -22,6 +22,7 @@ public class V3_GameManager : MonoBehaviour
     [Tooltip("Used for twitter functionality")]
     public Screencapture snapCam;      //Use snapCam.CallTakeSnapshot() to use the snapshot feature
     public CameraSystem_Camera cinCam;
+    public SmartResponses responses;
 
 
     // Start is called before the first frame update
@@ -32,18 +33,26 @@ public class V3_GameManager : MonoBehaviour
         // moveToLevel(levelSelect.currLevel());
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            snapCam.CallTakeSnapshot();
+        }
+    }
+
     public void build(GameObject building)
     {
         // if we can build the building, build it
-        if (conditionChecker.check(building, levelSelect.currLevel()))
+        bool canBuild = conditionChecker.check(building, levelSelect.currLevel());
+        if (canBuild)
         {
-            Debug.Log(building.name + " can be built");
+            // Debug.Log(building.name + " can be built");
             Instantiate(building, levelSelect.currLevel().transform.position, Quaternion.identity);
-            Debug.Log(building.name + " was built");
+            // Debug.Log(building.name + " was built");
             // TODO: handle UI messages (success)
             moveToLevel(); //DELETE ME LATER. FOR TESTING PURPOSES ONLY
             
-
             if (cinCam.camQ.Count != 0) //TODO: Remove when there are more camera spots than plots
             {
                 switchCameraSpots(cinCam.camQ.Dequeue());
@@ -52,9 +61,15 @@ public class V3_GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(building.name + " can't be built! Try again!");
+            // Debug.Log(building.name + " can't be built! Try again!");
             // TODO: handle UI messages (failure)
         }
+        // Debug.Log("RESPONSE: ");
+        var p = levelSelect.currLevel().GetComponent<ZoningParams>();
+        string response = (responses.getResponse(building, p.zoneTypes, canBuild));
+
+        // TODO: Print response to UI Element
+        Debug.Log(response);
     }
 
     //Switches highlight to the next level
@@ -64,7 +79,7 @@ public class V3_GameManager : MonoBehaviour
         if (levelSelect.levels.Count != 1)
         {
             levelSelect.getNextLevel();
-            Debug.Log("Moving to next plot");
+            // Debug.Log("Moving to next plot");
         }
         else
         {
