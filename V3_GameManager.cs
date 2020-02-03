@@ -24,6 +24,7 @@ public class V3_GameManager : MonoBehaviour
     public CameraSystem_Camera cinCam;
     public SmartResponses responses;
     public M_UI_Manager ui_Manager;
+    public bool defaultSpotQ = false;
 
 
     // Start is called before the first frame update
@@ -52,11 +53,11 @@ public class V3_GameManager : MonoBehaviour
             Instantiate(building, levelSelect.currLevel().transform.position, Quaternion.identity);
             // Debug.Log(building.name + " was built");
             // TODO: handle UI messages (success)
-            moveToLevel(); //DELETE ME LATER. FOR TESTING PURPOSES ONLY
+            // moveToLevel(); //DELETE ME LATER. FOR TESTING PURPOSES ONLY
             
-            if (cinCam.camQ.Count != 0) //TODO: Remove when there are more camera spots than plots
+            if (cinCam.camQ.Count != 0 && defaultSpotQ) //TODO: Remove when there are more camera spots than plots
             {
-                switchCameraSpots(cinCam.camQ.Dequeue());
+                switchCameraSpots();
             }
             // Invoke(moveToLevel)
         }
@@ -71,7 +72,7 @@ public class V3_GameManager : MonoBehaviour
 
         // TODO: Print response to UI Element
         Debug.Log(response);
-        ui_Manager.EditMessage(getHeader(canBuild), response);        
+        ui_Manager.EditMessage(getHeader(canBuild), response, canBuild);        
     }
 
     //Switches highlight to the next level
@@ -90,9 +91,10 @@ public class V3_GameManager : MonoBehaviour
         
     }
 
-    void switchCameraSpots(CameraSystem_Spot targetSpot)
+    public void switchCameraSpots()
     {
-        cinCam.SwitchCameraSpots(targetSpot);
+        if (cinCam.camQ.Count != 0)
+            cinCam.SwitchCameraSpots(cinCam.camQ.Dequeue());
     }
 
     string getHeader(bool success)
