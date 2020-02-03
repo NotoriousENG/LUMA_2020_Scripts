@@ -7,8 +7,10 @@ public class LevelSelect : MonoBehaviour
     [Tooltip("Enter levels (GameObject plots) in order of game flow")]
     public GameObject[] levelArr;
     public Queue<GameObject> levels;
-    public Color highlightColor;
-    private Color originalColor;
+    //public Color highlightColor;
+    //private Color originalColor;
+    private Material originalMaterial;
+    public Material highlightedMaterial;
 
     /*===========================================================
      * To Do With This Script and It's Implementation
@@ -45,13 +47,18 @@ public class LevelSelect : MonoBehaviour
 
     public void highlightLevel(GameObject level)
     {
-        originalColor =  level.GetComponent<Renderer>().material.color;
-        level.GetComponent<Renderer>().material.color = highlightColor;
+        //originalColor =  level.GetComponent<Renderer>().material.color;
+        //level.GetComponent<Renderer>().material.color = highlightColor;
+        originalMaterial = level.GetComponent<MeshRenderer>().material;
+        level.GetComponent<MeshRenderer>().material = highlightedMaterial;
     }
 
     public void unhighlightLevel(GameObject level)
     {
-        level.GetComponent<Renderer>().material.color = originalColor;
+        //level.GetComponent<Renderer>().material.color = originalColor;
+        level.GetComponent<MeshRenderer>().material = originalMaterial;
+
+
     }
 
 }
