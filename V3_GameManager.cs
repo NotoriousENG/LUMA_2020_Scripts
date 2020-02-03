@@ -23,6 +23,7 @@ public class V3_GameManager : MonoBehaviour
     public Screencapture snapCam;      //Use snapCam.CallTakeSnapshot() to use the snapshot feature
     public CameraSystem_Camera cinCam;
     public SmartResponses responses;
+    public M_UI_Manager ui_Manager;
 
 
     // Start is called before the first frame update
@@ -70,6 +71,7 @@ public class V3_GameManager : MonoBehaviour
 
         // TODO: Print response to UI Element
         Debug.Log(response);
+        ui_Manager.EditMessage(getHeader(canBuild), response);        
     }
 
     //Switches highlight to the next level
@@ -91,6 +93,15 @@ public class V3_GameManager : MonoBehaviour
     void switchCameraSpots(CameraSystem_Spot targetSpot)
     {
         cinCam.SwitchCameraSpots(targetSpot);
+    }
+
+    string getHeader(bool success)
+    {
+        if (success)
+        {
+            return "Success";
+        }
+        return "failure";
     }
 
 }
